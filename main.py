@@ -1,25 +1,30 @@
 from pathlib import Path
 
-## 1
-# parent_folder_path = Path(".")
-#
-# def parse_folder(path):
-#     for element in path.iterdir():
-#         if element.is_dir():
-#             print(f"This is folder - {element.name}")
-#             parse_folder(element)
-#         if element.is_file():
-#             print(f"This is file - {element.name}")
-#
-# parse_folder(parent_folder_path)
 
-## 2
-file_name = Path("./Temp")
+def total_salary(path):
+    total = 0
+    count = 0
 
-try:
-    with open(file_name / "test.txt", "r", encoding="utf-8") as file:
-        for line in file:
-            print(line, end='')
+    try:
+        with open(path, 'r', encoding='utf-8') as file:
+            for line in file:
+                name, salary = line.strip().split(',')
+                total += int(salary)
+                count += 1
 
-except Exception as e:
-    print(f"{e} with file")
+        average = total / count if count > 0 else 0
+
+        return total, average
+
+    except FileNotFoundError:
+        print("Файл не знайдено.")
+        return 0, 0
+    except ValueError:
+        print("Помилка в даних файлу. Переконайтеся, що зарплата є числом.")
+        return 0, 0
+    except Exception as e:
+        print(f"Сталася помилка: {e}")
+        return 0, 0
+
+total, average = total_salary("Temp/salary.txt")
+print(f"Загальна сума заробітної плати: {total}, Середня заробітна плата: {average}")
